@@ -1,0 +1,52 @@
+//--------------------------------------------------------------------------------------------------
+/**
+ * Application Definition for the sensor framework app.
+ *
+ * Copyright (C) Sierra Wireless Inc.
+ */
+//--------------------------------------------------------------------------------------------------
+
+sandboxed: false
+start: auto
+
+executables:
+{
+    sensord = ( sensorFw plugins/dmPlugin plugins/iioPlugin)
+}
+
+processes:
+{
+    run:
+    {
+        ( sensord )
+    }
+
+    faultAction: stopApp
+}
+
+bindings:
+{
+    sensord.sensorFw.io -> dataHub.io
+    sensord.sensorFw.admin -> dataHub.admin
+    sensord.periodicSensor.dhubIO -> dataHub.io
+#if ${LE_CONFIG_RTOS} = y
+    // Need to access these apis via RPC for Device Management
+#else
+    sensord.dmPlugin.le_bootReason -> powerMgr.le_bootReason
+    sensord.dmPlugin.le_info -> modemService.le_info
+
+    sensord.deviceManagement.le_ulpm -> powerMgr.le_ulpm
+    sensord.deviceManagement.le_data -> dataConnectionService.le_data
+    sensord.deviceManagement.le_info -> modemService.le_info
+    sensord.deviceManagement.le_ips  -> modemService.le_ips
+    sensord.deviceManagement.le_mdc  -> modemService.le_mdc
+    sensord.deviceManagement.le_mrc  -> modemService.le_mrc
+    sensord.deviceManagement.le_sim  -> modemService.le_sim
+    sensord.deviceManagement.le_sms  -> modemService.le_sms
+    sensord.deviceManagement.le_temp -> modemService.le_temp
+    sensord.deviceManagement.le_pos -> positioningService.le_pos
+    sensord.deviceManagement.le_gnss -> positioningService.le_gnss
+    sensord.deviceManagement.le_cellnet -> cellNetService.le_cellnet
+    sensord.deviceManagement.le_fwupdate -> fwupdateService.le_fwupdate
+#endif
+}

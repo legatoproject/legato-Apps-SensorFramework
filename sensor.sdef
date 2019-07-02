@@ -1,0 +1,23 @@
+//--------------------------------------------------------------------------------------------------
+// Sample definition of a system that need to integrate sensors and connectivity apps.
+// Includes base (default) Legato system, Data Hub, Sensor Framework (which also includes the
+// IIO Plugin, Device Management Plugin) and MQTT sample app (publisher and subscriber modules).
+//
+// Copyright (C) Sierra Wireless Inc.
+//--------------------------------------------------------------------------------------------------
+
+#include "$LEGATO_ROOT/default.sdef"
+
+interfaceSearch:
+{
+    $LEGATO_ROOT/apps/sample/dataHub
+}
+
+apps:
+{
+    $LEGATO_ROOT/apps/sample/sensorFramework/sensorFw.adef
+    $LEGATO_ROOT/apps/sample/dataHub/dataHub.adef
+    $LEGATO_ROOT/apps/platformServices/mqttClient/mqttClient.adef
+    $LEGATO_ROOT/apps/sample/mqtt/mqttPublisher.adef
+    $LEGATO_ROOT/apps/sample/mqtt/mqttSubscriber.adef
+}

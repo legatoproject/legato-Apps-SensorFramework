@@ -1,0 +1,39 @@
+sources:
+{
+    dm.c
+}
+
+requires:
+{
+    component:
+    {
+        ${LEGATO_ROOT}/apps/sample/sensorFramework/sensorFw
+        ${LEGATO_ROOT}/apps/platformServices/airVantageConnector/deviceManagement
+    }
+    api:
+    {
+        le_bootReason.api
+        le_info.api
+    }
+}
+
+cflags:
+{
+    -I${LEGATO_ROOT}/framework/liblegato
+    -I${LEGATO_ROOT}/apps/platformServices/airVantageConnector/avcClient
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/include
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/include/platform-specific/linux
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/sessionManager
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/objectManager
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/packageDownloader
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/3rdParty/wakaama/core
+    -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/3rdParty/wakaama/core/er-coap-13
+    -I${LEGATO_ROOT}/apps/sample/sensorFramework/sensorFw
+    -std=c99
+}
+
+ldflags:
+{
+    -L${LEGATO_BUILD}/3rdParty/lib
+    -ljansson
+}

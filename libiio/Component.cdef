@@ -1,0 +1,24 @@
+externalBuild:
+{
+    "cmake -DWITH_IIOD=OFF -DWITH_USB_BACKEND=OFF -DWITH_SERIAL_BACKEND=OFF -DWITH_NETWORK_BACKEND=OFF -DWITH_TESTS=OFF ${LEGATO_ROOT}/3rdParty/libiio"
+    "cmake --build ."
+    "cp libiio.so* ${LEGATO_BUILD}/3rdParty/lib/"
+}
+
+bundles:
+{
+    file:
+    {
+        [rx] ${LEGATO_BUILD}/3rdParty/lib/libiio.so      /lib/
+        [rx] ${LEGATO_BUILD}/3rdParty/lib/libiio.so.0    /lib/
+        [rx] ${LEGATO_BUILD}/3rdParty/lib/libiio.so.0.18 /lib/
+    }
+}
+
+provides:
+{
+    headerDir:
+    {
+        $CURDIR/include
+    }
+}

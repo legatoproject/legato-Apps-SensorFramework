@@ -1,0 +1,97 @@
+/** @page conceptsSensorFw Sensor Framework
+
+The Legato Sensor Framework provides a standard way of making sensor and actuator
+information available to other Legato applications. This is accomplished using
+the DataHub in conjunction with a sensor application and plugins which
+implement the handling of specific sensor interfaces. The framework is composed
+of one application which mediates the interaction with DataHub, and several
+plugins. The sensor framework application does not contain any code that
+reads sensors and writes actuators. The plugins contained within a Legato
+Component has code to read the sensor and are dynamically linked by the
+Sensor Framework. The role of the Sensor Framework is to adapt a standard
+C interface provided by the Plugins into data to and from the DataHub.
+
+@image html sensorFrameworkArchitecture.png
+
+@subsection Registering Handlers
+
+The plugins can register their read or write function to the Sensor Framework
+by calling the api sensorFw_RegisterCallback(). The function takes in the
+information describing the sensor in a JSON format and creates resources
+in the Data Hub based on this information. The standard information that must
+be passed to register a handler is:
+
+@code
+{
+    "name": "furnace sensor",   // Long form name (for use with debug / cli)
+    "path": "temp",             // The short form name, would be used in the
+                                // DataHub path name
+    "readOnce": true,           // Is this resource changeable - i.e. is it
+                                // a fixed static value that only needs to be
+                                // read once at startup.
+    "type": "temperature",      // The description of the measured data for
+                                // sensor/actuator (user defined)
+    "unit": "degree celcius",   // Unit of measurement (user defined)
+    "input": true               // Is this capable of producing Input (true)
+                                // into the Sensor Framework,
+}
+@endcode
+
+@subsection Static Information
+
+The Sensor Framework is also used to read static information of the device such
+as serial number. Registering a static resource with "readOnce" set to false
+in the JSON file will appear in the Data Hub as follows.
+
+@code
+/
+   app
+      sensorFw
+         device
+            SN <input> = "xxxxxxxxxxxx" (ts: yy.zz)
+                  data type = string
+@endcode
+
+@subsection Periodic Sensor
+All other sensors are considered periodic and follow a schema as mentioned below.
+
+@code
++--/value = the temperature sensor value
+|
++--/period = an output used to configure the temperature sensor's sampling period
+|
++--/trigger = an output used to immediately trigger a single temperature sensor sample
+|
++--/enable = an output used to enable or disable the temperature sensor
+|
++--/config = A new standard field for configuring a device - can be output or input
+@endcode
+
+For example creating a temperature sensor with "readOnce" set to true will appear in
+the Data Hub as follows.
+
+@code
+temp
+   value <input> = 32988.281250 (ts: 1556834900.509102)
+         data type = numeric
+         units = 'milli degree celcius'
+   enable <output> = true (ts: 1556818352.405519)
+         data type = Boolean
+   period <output> = 2.000000 (ts: 1556818352.406531)
+         data type = numeric
+         units = 's'
+   trigger <output> =
+         data type = trigger
+   config <output> = {"scale": [1.95312]} (ts: 1556818352.414592)
+         data type = JSON (e.g., '{"scale": [1.95312]}')
+@endcode
+
+@subsection Configuration
+To enable free-form configuration of sensors and actuators a new standard
+field per sensor is created in the Data Hub, the "/config" field. This
+field is of type JSON and is transparent from the Sensor Framework perspective.
+The author of a Sensor Plugin will is expected to document the
+fields contained within the /config JSON data.
+
+Copyright (C) Sierra Wireless Inc.
+**/

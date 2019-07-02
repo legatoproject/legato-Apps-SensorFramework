@@ -1,0 +1,15 @@
+externalBuild:
+{
+    "cmake -DJANSSON_BUILD_SHARED_LIBS=1 ${LEGATO_ROOT}/3rdParty/jansson"
+    "cmake --build ."
+    "mkdir -p ${LEGATO_BUILD}/libs"
+    "find -name libjansson.so | xargs cp -t ${LEGATO_BUILD}/libs/"
+}
+
+bundles:
+{
+    file:
+    {
+        [rx] ${LEGATO_BUILD}/libs/libjansson.so  /lib/
+    }
+}

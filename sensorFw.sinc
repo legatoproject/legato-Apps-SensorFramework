@@ -1,0 +1,10 @@
+//--------------------------------------------------------------------------------------------------
+// Include this file in the .sdef file to include sensor framework app to your system.
+//
+// Copyright (C), Sierra Wireless Inc.
+//--------------------------------------------------------------------------------------------------
+
+apps:
+{
+    $LEGATO_ROOT/apps/sample/sensorFramework
+}

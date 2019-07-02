@@ -1,0 +1,25 @@
+
+sources:
+{
+    sensorFw.c
+}
+
+requires:
+{
+    api:
+    {
+        io.api
+        admin.api
+    }
+    component:
+    {
+        $LEGATO_ROOT/apps/sample/dataHub/components/periodicSensor
+        $LEGATO_ROOT/apps/sample/dataHub/components/json
+    }
+}
+
+cflags:
+{
+    -std=c99
+    -I$LEGATO_ROOT/apps/sample/dataHub/components/json
+}

@@ -1,0 +1,108 @@
+/** @page conceptsSensorSystem Sensor System
+
+Include the Data Hub, Sensor Framework and MQTT client application
+to the default legato system to build a Legato system that interfaces
+with sensors and connectivity apps. The following is a tutorial for
+writing a Legato sensor system.
+
+-# Create a file named sensor.sdef
+-# Include the default legato system by adding the following line
+
+    @code
+    #include "$LEGATO_ROOT/default.sdef"
+    @endcode
+
+-# Include the dataHub and sensorFw
+
+    @code
+    #include "$LEGATO_ROOT/apps/sample/dataHub.sinc"
+    #include "$LEGATO_ROOT/apps/sample/sensorFramework.sinc"
+    @endcode
+
+-# Include the MQTT client app
+
+    @code
+    #include "$LEGATO_ROOT/apps/sample/MQTTClient.sinc"
+    @endcode
+
+The sensor.sdef is a demonstration of connecting sensors to Data Hub using
+the Sensor Framework. The app publishes the resources in the Data Hub
+periodically. The following diagram provides a conceptual view of interaction
+between these apps.
+
+@image html sensorSystemArchitecture.png
+
+@section sensorSystem_APP Apps
+
+| Application              | Description                                                |
+| ------------------------------------------------------------------------------------- |
+| @c mqttPublisher.adef    | Publishes the resources in Data Hub under topic /<imei>/   |
+| @c mqttSubscriber.adef   | Subscribes to everything under /<imei>/ for loopback       |
+| @c sensorFw.adef         | Interfaces to LibIIO and Device Management                 |
+| @c dataHub.adef          | Central Hub to read/write sensor data                      |
+
+@section Build
+
+The system described above can be built using the following command:
+
+@code
+mksys -t \<target\> sensor.sdef -i apps/sample/dataHub/
+@endcode
+
+Run the following command to install the system to the target.
+
+@code
+update sensor.\<target\>.update 192.168.2.2
+@endcode
+
+The system assumes a Mosquitto MQTT (open source MQTT broker) is running on the
+Linux workstation at address 192.168.2.2:1883.
+
+@section Test
+
+Run the Mosquitto subscriber on the Linux workstation to monitor the messages published
+from the client.
+
+@code
+mosquitto_sub -t \<imei\>/#
+@endcode
+
+You can also use the 'dhub' tool to list the resources from the Data Hub point of view.
+
+@code
+dhub list
+@endcode
+
+The 'dhub' tool can also be used to change sensor configuration. Use the following
+command to push a new value to the config field. This configuration will be passed
+transparently to the plugin by the sensor framework. It is up to the plugin to
+receive this configuration and take necessary action.
+
+@code
+dhub push --json \<resource\>/config \<value(json)\>
+@endcode
+
+@note The system currently doesn't include any kernel drivers for IIO.
+
+@section Adding IIO Drivers
+
+Refer to the "Kernel Modules" section in legato documentation to add IIO drivers
+as Kernel Modules. IIO drivers for sensors on the mangOH board can be found here:
+https://github.com/mangOH/mangOH/tree/master/linux_kernel_modules
+
+Example:
+Add the following line to the sensor.sdef to interface with the bmi160 sensor.
+
+@code
+kernelModules:
+{
+    \<mangOH\>/linux_kernel_modules/bmi160/bmi160-i2c
+    \<mangOH\>/linux_kernel_modules/bmi160/bmi160
+}
+@endcode
+
+@note Refer to mangOH documentation for other kernel modules related to different
+platforms such as mangOH Green, mangOH Red or mangOH Yellow.
+
+Copyright (C) Sierra Wireless Inc.
+**/

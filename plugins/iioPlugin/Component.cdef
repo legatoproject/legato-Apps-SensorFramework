@@ -1,0 +1,38 @@
+requires:
+{
+    component:
+    {
+        ${LEGATO_ROOT}/apps/sample/sensorFramework/libiio
+        ${LEGATO_ROOT}/apps/sample/sensorFramework/libjansson
+        ${LEGATO_ROOT}/apps/sample/sensorFramework/sensorFw
+    }
+    lib:
+    {
+        libiio.so
+        libiio.so.0
+        libiio.so.0.18
+    }
+}
+
+sources:
+{
+    iioPlugin.c
+}
+
+
+cflags:
+{
+    -I${LEGATO_BUILD}/framework/libjansson/include
+    -I${LEGATO_ROOT}/framework/liblegato
+    -I${LEGATO_ROOT}/3rdParty/libiio
+    -I${LEGATO_ROOT}/apps/sample/sensorFramework/libiio
+    -I${LEGATO_ROOT}/apps/sample/sensorFramework/sensorFw
+    -std=c99
+}
+
+ldflags:
+{
+    -L${LEGATO_BUILD}/3rdParty/lib
+    -ljansson
+    -liio
+}
