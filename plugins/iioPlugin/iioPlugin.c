@@ -596,7 +596,7 @@ static void IioPluginInit
             // Create a resource to read sensor sample
             if (iio_channel_is_output(chan))
             {
-                snprintf(resourcePath, sizeof(resourcePath), "%s/%s", resourcePath, "value");
+                strncat(resourcePath, "/value", sizeof(resourcePath) - strlen(resourcePath) - 1);
                 LE_ERROR("Registering output - TO BE IMPLEMENTED");
             }
             else
