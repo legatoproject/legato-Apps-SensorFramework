@@ -17,9 +17,12 @@ requires:
     }
 }
 
+// TODO: airVantageConnector/avcDaemon must be removed from include pathes once avc is merged for uLegato
+
 cflags:
 {
     -I${LEGATO_ROOT}/framework/liblegato
+    -I${LEGATO_ROOT}/apps/platformServices/airVantageConnector/avcDaemon/avcClient
     -I${LEGATO_ROOT}/apps/platformServices/airVantageConnector/avcClient
     -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/include
     -I${LEGATO_ROOT}/3rdParty/Lwm2mCore/include/platform-specific/linux
