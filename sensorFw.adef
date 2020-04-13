@@ -44,6 +44,9 @@ bindings:
     sensord.deviceManagement.le_sim  -> modemService.le_sim
     sensord.deviceManagement.le_sms  -> modemService.le_sms
     sensord.deviceManagement.le_temp -> modemService.le_temp
+#if ${MK_CONFIG_MODEMSERVICE_NO_LPT} = ""
+    sensord.deviceManagement.le_lpt -> modemService.le_lpt
+#endif
     sensord.deviceManagement.le_pos -> positioningService.le_pos
     sensord.deviceManagement.le_gnss -> positioningService.le_gnss
     sensord.deviceManagement.le_cellnet -> cellNetService.le_cellnet
