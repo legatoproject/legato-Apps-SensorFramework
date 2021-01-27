@@ -51,6 +51,7 @@ bindings:
     sensord.deviceManagement.le_gnss -> positioningService.le_gnss
     sensord.deviceManagement.le_cellnet -> cellNetService.le_cellnet
     sensord.deviceManagement.le_fwupdate -> fwupdateService.le_fwupdate
+    sensord.deviceManagement.le_power -> powerService.le_power
 #if ${LE_CONFIG_ENABLE_WIFI} = y
     sensord.deviceManagement.le_wifiClient -> wifiService.le_wifiClient
 #endif
